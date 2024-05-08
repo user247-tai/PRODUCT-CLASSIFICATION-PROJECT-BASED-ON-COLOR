@@ -10,6 +10,7 @@ LiquidCrystal_I2C lcd(0x3F,16,2);
 #define S3 4
 #define sensorOut A3
  // bien su dung trong ham
+unsigned long time;
 int R = 0;
 int G = 0;
 int B = 0;
@@ -30,6 +31,7 @@ Servo myServo1, myServo2, myServo3;
 int a = 0, b = 0, c = 0;
 
 void setup() {
+  time = millis();
   // Khai bao cac chan của cam bien mau
   pinMode(S0, OUTPUT);
   pinMode(S1, OUTPUT);
@@ -79,7 +81,11 @@ void loop() {
       if (giatri1 == 0)
         {
           a++;
-          delay(3000); sservo1();purple = 0;
+          if ( (unsigned long) (millis() - time) > 3000){ 
+            sservo1();
+            purple = 0;
+            time = millis();
+          }
         }
     }
     gtmacdinh1 = giatri1;
@@ -90,8 +96,11 @@ void loop() {
       if (giatri2 == 0)
         {
           b++;
-          delay(3000); sservo2();green = 0;
-          
+           if ( (unsigned long) (millis() - time) > 6000){ 
+            sservo2();
+            green = 0;
+            time = millis();
+          }
         }
     }
     gtmacdinh2 = giatri2;
@@ -102,8 +111,11 @@ void loop() {
       if (giatri3 == 0)
         {
           c++;
-          delay(3000); sservo3();blue = 0;
-          
+          if ( (unsigned long) (millis() - time) > 9000){
+            sservo3();
+            blue = 0;
+            time = millis();
+          }
         }
     }
     gtmacdinh3 = giatri3;
@@ -113,21 +125,18 @@ void loop() {
 void sservo1(){ // quay khi nhan mau tim
   // xet goc quay
   myServo1.write(0);
-  delay(1000);
+  delay(500);
   myServo1.write(90);
-  //delay(3000);
 }
 void sservo2(){ // quay khi nhan mau xanh la
   myServo2.write(0);
-  delay(1000);
+  delay(500);
   myServo2.write(90);
-  //delay(3000);
 }
 void sservo3(){ // quay khi nhan mau xanh duong
   myServo3.write(0);
-  delay(1000);
+  delay(500);
   myServo3.write(90);
-  //delay(3000);
 }
 
 int readColour() { // Ham nhan biet mau
@@ -171,10 +180,6 @@ int readColour() { // Ham nhan biet mau
   else if (R < 155 && R > 130 && G < 75 && G > 50 && B < 40 && B > 15) {
    colour = 3;  // Blue
   }
-  else{
-    //delay(500);
-  }
-
   return colour;
 }
 
@@ -189,6 +194,4 @@ void printLCD() // Ham in ra LCD
   lcd.print(b);
   lcd.print("  B:"); // Mau xanh duong
   lcd.print(c);
-  
-  //delay(2000); 
 }
