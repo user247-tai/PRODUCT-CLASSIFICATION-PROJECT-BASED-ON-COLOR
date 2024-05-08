@@ -17,6 +17,9 @@ int B = 0;
 int PW = 0;
 int colour = 0;
 int purple = 0, green = 0, blue = 0;
+bool CheckPurple = false;
+bool CheckGreen = false;
+bool CheckBlue = false;
 // dinh nghia cac bien dung trong cam bien hong ngoai
   // bien cac chan
 int cambien1 = 3; 
@@ -81,10 +84,11 @@ void loop() {
       if (giatri1 == 0)
         {
           a++;
-          if ( (unsigned long) (millis() - time) > 3000){ 
+          if (CheckPurple && (unsigned long) (millis() - time) > 3000){ 
             sservo1();
             purple = 0;
             time = millis();
+            CheckPurple = false;
           }
         }
     }
@@ -96,10 +100,11 @@ void loop() {
       if (giatri2 == 0)
         {
           b++;
-           if ( (unsigned long) (millis() - time) > 6000){ 
+           if (CheckGreen && (unsigned long) (millis() - time) > 3000){ 
             sservo2();
             green = 0;
             time = millis();
+            CheckGreen = false;
           }
         }
     }
@@ -111,10 +116,11 @@ void loop() {
       if (giatri3 == 0)
         {
           c++;
-          if ( (unsigned long) (millis() - time) > 9000){
+          if (CheckBlue && (unsigned long) (millis() - time) > 3000){
             sservo3();
             blue = 0;
             time = millis();
+            CheckBlue = false;
           }
         }
     }
@@ -173,12 +179,15 @@ int readColour() { // Ham nhan biet mau
   //delay(25);
   if (R < 140 && R > 120 && G < 150 && G > 130 && B < 80 && B > 60) {
     colour = 1;  // Purple
+    CheckPurple = true;
   }
   else if (R < 110 && R > 80 && G < 70 && G > 50 && B < 80 && B > 60) {
    colour = 2;  // Green
+   CheckGreen = true;
   }
   else if (R < 155 && R > 130 && G < 75 && G > 50 && B < 40 && B > 15) {
    colour = 3;  // Blue
+   CheckBlue = true;
   }
   return colour;
 }
